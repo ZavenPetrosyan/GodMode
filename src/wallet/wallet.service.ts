@@ -5,7 +5,7 @@ import { TokenConfig } from '../interfaces/token-config.interface';
 const TOKEN_PRESETS: TokenConfig[] = [
     {
         network: 'mainnet',
-        address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+        address: '<address-here>',
         threshold: 500,
         classification: 'GodMode',
     },
@@ -16,7 +16,7 @@ export class WalletService {
     async classifyWallet(address: string): Promise<{ [key: string]: string }> {
         let provider;
         try {
-            provider = new ethers.InfuraProvider('mainnet', 'fbfb7c83541245f5bec272546fcaeec3');
+            provider = new ethers.InfuraProvider('mainnet', '<your project-key here>');
         } catch (err) {
             throw new HttpException('Unsupported network', HttpStatus.BAD_REQUEST);
         }
