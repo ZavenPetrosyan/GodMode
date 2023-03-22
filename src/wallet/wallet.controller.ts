@@ -8,9 +8,6 @@ export class WalletController {
   @Post('classify')
   async classifyWallet(@Body() body: { address: string }): Promise<any> {
     const { address } = body;
-
-    // Validate input here if necessary
-
     const classifications = await this.walletService.classifyWallet(address);
 
     return {

@@ -1,7 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
-import { BigNumberish } from 'ethers';
-
 import { TokenConfig } from '../interfaces/token-config.interface';
 
 const TOKEN_PRESETS: TokenConfig[] = [
@@ -26,13 +24,18 @@ export class WalletService {
         const classifications: { [key: string]: string } = {};
 
         for (const token of TOKEN_PRESETS) {
-            const contract = new ethers.Contract(token.address, ['function balanceOf(address) view returns (uint256)'], provider);
-            const balance = await contract.balanceOf(address);
-
-            if (balance.gte(token.threshold)) {
-                classifications[token.address] = 'GodMode';
+            const balance = await provider.getBalance(address);
+            const etherValue = ethers.formatUnits(balance, "ether");
+            if (Math.floor(Number(etherValue)) > token.threshold) {
+                classifications['Classification'] = 'GodMode';
+                classifications['Token'] = token.address;
+                classifications['Threshold'] = etherValue;
+                classifications['ABI'] = 'ERC-20';
             } else {
-                classifications[token.address] = 'Normal';
+                classifications['Classification'] = 'Normal';
+                classifications['Token'] = token.address;
+                classifications['Threshold'] = etherValue;
+                classifications['ABI'] = 'ERC-20';
             }
         }
 
